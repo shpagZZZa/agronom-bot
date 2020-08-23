@@ -1,15 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
+import json
 
 
-class Film():
+class Film:
     def __init__(self, name, film_id, link):
-        self.name = name
+        self.name = name.replace('\n', '')
         self.link = link
+        self.film_id = film_id
 
-        html = get_html(film_id)
+        html = self.get_html(film_id)
         self.mark_kp = self.get_mark_kp(html)
-        self.mark_imdb = self.get_mark_imdb(html)
 
     def get_mark_kp(self, html):
         soup = BeautifulSoup(html, 'lxml')
@@ -18,11 +19,18 @@ class Film():
 
     def get_mark_imdb(self, html):
         soup = BeautifulSoup(html, 'lxml')
-        mark = soup.find('imdb_rating').get_text()
-        return mark
+        try:
+            mark = soup.find('imdb_rating').get_text()
+            return mark
+        except:
+            print(f'{self.name} has no imdb rating')
 
     def get_html(self, film_id):
-        return requests.get('https://rating.kinopoisk.ru/'+ film_id + '.xml').content
+        return requests.get('https://rating.kinopoisk.ru/' + str(film_id) + '.xml').content
 
-    def __str__(self):
-        return f'{self.name} - {self.mark}'
+    def to_json(self):
+        return {
+            'name': self.name,
+            'rating': self.mark_kp,
+            'link': self.link
+        }
