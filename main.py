@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from discord.ext import commands
 
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
+TOKEN = os.getenv('DISCORD_TOKEN')[::-1]
 client = commands.Bot(command_prefix='%')
 
 @client.command()
