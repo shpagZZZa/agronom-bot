@@ -40,7 +40,7 @@ class Bot(commands.Cog):
         await contex.send(image)
 
     @commands.command()
-    async def film(self, context):
+    async def cinema(self, context):
         film = self.get_film()
         msg = f"""
         Что посмотреть? Надо подумать... Есть один фильм... Вчера посмотрел, думаю тебе точно должно понравиться, тебе вроде нравится этот режиссер. Лови ссылку, дружище, и приятного просмотра!
